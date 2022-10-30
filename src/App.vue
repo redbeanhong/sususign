@@ -25,6 +25,9 @@ import HelloWorld from "./components/HelloWorld.vue";
 
   <RouterView />
 </template>
+<style lang="scss">
+@import "@/assets/scss/global.scss";
+</style>
 
 <style scoped>
 header {
