@@ -1,5 +1,6 @@
 <script setup>
 import PdfEditItem from "../components/PdfEditItem.vue";
+import SignWritter from "../components/SignWritter.vue";
 </script>
 
 <template>
@@ -33,7 +34,17 @@ import PdfEditItem from "../components/PdfEditItem.vue";
               <div class="card-head">工具</div>
               <div class="card-body">
                 <ul>
-                  <li><div class="btn">簽名區域</div></li>
+                  <li v-for="(sign, index) in editSignList" :key="index">
+                    <a href="#" @click="deleteSign(sign.name)">刪除</a>
+                    <div class="btn" @click="openSign(sign)">
+                      <img :src="sign.imgUrl" alt="sign" style="width: 100%" />
+                    </div>
+                  </li>
+                  <li v-if="addSignList.length > 0">
+                    <div class="btn" @click="openSign(addSignList[0])">
+                      簽名區域
+                    </div>
+                  </li>
                   <li><div class="btn">顏色</div></li>
                   <li><div class="btn">新增文字</div></li>
                   <li><div class="btn">新增時間</div></li>
@@ -43,6 +54,11 @@ import PdfEditItem from "../components/PdfEditItem.vue";
           </aside>
         </div>
         <div class="col-6">
+          <SignWritter
+            :isShow="isWritter"
+            :signer="signer"
+            @hideSign="hideSign"
+          />
           <div id="main-pdf">
             <PdfEditItem
               v-for="(page, index) in pages"
@@ -89,6 +105,13 @@ export default {
       selectedPageIndex: -1,
       allObjects: [],
       pagesScale: [],
+      isWritter: false,
+      signer: "",
+      signs: [
+        { name: "user1_sign", imgUrl: "" },
+        { name: "user2_sign", imgUrl: "" },
+        { name: "user3_sign", imgUrl: "" },
+      ],
     };
   },
   methods: {
@@ -134,7 +157,6 @@ export default {
       pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
       return pdfjs.getDocument(url).promise;
     },
-
     renderPdf: function renderPdf(pdf) {
       (async () => {
         const page = await pdf.getPage(1);
@@ -163,6 +185,42 @@ export default {
         page.render(renderContext);
       })();
     },
+    getSignUrl() {
+      this.signs.forEach((e) => {
+        if (localStorage.getItem(e.name)) {
+          e.imgUrl = localStorage.getItem(e.name);
+        } else {
+          e.imgUrl = "";
+        }
+      });
+    },
+    hideSign() {
+      this.isWritter = false;
+      this.getSignUrl();
+    },
+    openSign(user) {
+      const vm = this;
+      vm.isWritter = true;
+      vm.signer = user;
+    },
+    deleteSign(user) {
+      const vm = this;
+      if (localStorage.getItem(user)) {
+        localStorage.removeItem(user);
+        vm.getSignUrl();
+      }
+    },
+  },
+  computed: {
+    addSignList() {
+      return this.signs.filter((e) => e.imgUrl == "");
+    },
+    editSignList() {
+      return this.signs.filter((e) => e.imgUrl != "");
+    },
+  },
+  created() {
+    this.getSignUrl();
   },
 };
 </script>
