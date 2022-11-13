@@ -96,15 +96,6 @@ export default {
       vm.canvas.addEventListener("mousemove", draw);
       vm.canvas.addEventListener("mouseup", () => (isDrawing = false));
       vm.canvas.addEventListener("mouseout", () => (isDrawing = false));
-      //   fabric.Image.fromURL(sign.src, function (image) {
-      //     // 設定簽名出現的位置及大小，後續可調整
-      //     image.top = 400;
-      //     image.scaleX = 0.5;
-      //     image.scaleY = 0.5;
-      //     const canvas = new fabric.Canvas("the-canvas");
-      //     canvas.add(image);
-      //   });
-      // });
     },
     clearCanvas() {
       const vm = this;
@@ -126,18 +117,24 @@ export default {
     hideSign() {
       this.$emit("hideSign");
     },
+    updateWritter() {
+      const vm = this;
+      this.width = this.canvas.parentElement.offsetWidth;
+      if (vm.signer.imgUrl) {
+        const img = new Image(); // Create new img element
+        img.src = vm.signer.imgUrl;
+        vm.ctx.drawImage(img, 0, 0);
+      }
+    },
   },
   mounted() {
     this.render();
   },
   updated() {
-    const vm = this;
-    this.width = this.canvas.parentElement.offsetWidth;
-    if (vm.signer.imgUrl) {
-      const img = new Image(); // Create new img element
-      img.src = vm.signer.imgUrl;
-      vm.ctx.drawImage(img, 0, 0);
-    }
+    this.updateWritter();
+  },
+  watch: {
+    isShow() {},
   },
 };
 </script>

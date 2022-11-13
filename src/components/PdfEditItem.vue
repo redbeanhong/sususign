@@ -8,14 +8,19 @@ export default {
   props: {
     page: Object,
     name: String,
+    image: Object,
+  },
+  data() {
+    return {
+      canvas: {},
+    };
   },
   methods: {
     render: async function render() {
       const desiredWidth = 300;
       const vm = this;
       const id = await vm.name;
-      const canvas = document.getElementById(id);
-      console.log(canvas);
+      const canvas = document.createElement("canvas");
       const _page = await vm.page;
       const context = canvas.getContext("2d");
       let viewport = _page.getViewport({ scale: 1 });
@@ -37,11 +42,56 @@ export default {
         transform,
         viewport,
       };
-      await _page.render(renderContext).promise;
+      const { fabric } = await import("fabric");
+      const canvas2 = new fabric.Canvas(id);
+      vm.canvas = canvas2;
+      canvas2.requestRenderAll();
+      const renderTask = _page.render(renderContext);
+      const pdfData = await renderTask.promise.then(() => canvas);
+      const pdfImage = await vm.pdfToImage(pdfData);
+
+      // 透過比例設定 canvas2 尺寸
+      canvas2.setWidth(pdfImage.width / window.devicePixelRatio);
+      canvas2.setHeight(pdfImage.height / window.devicePixelRatio);
+
+      // 將 PDF 畫面設定為背景
+      canvas2.setBackgroundImage(pdfImage, canvas2.renderAll.bind(canvas2));
+    },
+    pdfToImage: async function pdfToImage(pdfData) {
+      // 設定 PDF 轉為圖片時的比例
+      const scale = 1 / window.devicePixelRatio;
+      const { fabric } = await import("fabric");
+      // 回傳圖片
+      return new fabric.Image(pdfData, {
+        id: "renderPDF",
+        scaleX: scale,
+        scaleY: scale,
+      });
+    },
+    addImage: async function addImage() {
+      const vm = this;
+      if (vm.image == {}) return;
+
+      const { fabric } = await import("fabric");
+      fabric.Image.fromURL(vm.image.imgUrl, function (image) {
+        // 設定簽名出現的位置及大小，後續可調整
+        console.log(vm.image.imgUrl);
+        image.top = 100;
+        image.scaleX = 1;
+        image.scaleY = 1;
+        vm.canvas.add(image);
+      });
     },
   },
   created() {
     this.render();
+  },
+  watch: {
+    image() {
+      if (this.image != {}) {
+        this.addImage();
+      }
+    },
   },
 };
 </script>

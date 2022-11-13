@@ -36,16 +36,16 @@ import SignWritter from "../components/SignWritter.vue";
                 <ul>
                   <li v-for="(sign, index) in editSignList" :key="index">
                     <a href="#" @click="deleteSign(sign.name)">刪除</a>
-                    <div class="btn" @click="openSign(sign)">
+                    <a href="#" @click="openSign(sign)">修改</a>
+                    <div class="btn" @click="addImageToPdf(sign)">
                       <img :src="sign.imgUrl" alt="sign" style="width: 100%" />
                     </div>
                   </li>
                   <li v-if="addSignList.length > 0">
                     <div class="btn" @click="openSign(addSignList[0])">
-                      簽名區域
+                      新增簽名
                     </div>
                   </li>
-                  <li><div class="btn">顏色</div></li>
                   <li><div class="btn">新增文字</div></li>
                   <li><div class="btn">新增時間</div></li>
                 </ul>
@@ -62,9 +62,11 @@ import SignWritter from "../components/SignWritter.vue";
           <div id="main-pdf">
             <PdfEditItem
               v-for="(page, index) in pages"
-              :page="page"
+              :page="page.data"
+              :image="page.image"
               :key="index"
               :name="'pdf' + index"
+              @click="addImage(page)"
             />
           </div>
         </div>
@@ -112,6 +114,7 @@ export default {
         { name: "user2_sign", imgUrl: "" },
         { name: "user3_sign", imgUrl: "" },
       ],
+      image: {},
     };
   },
   methods: {
@@ -139,11 +142,15 @@ export default {
         const numPages = pdf.numPages;
         vm.pages = Array(numPages)
           .fill()
-          .map((_, i) => pdf.getPage(i + 1));
+          .map((_, i) => {
+            let page = {};
+            page.data = pdf.getPage(i + 1);
+            page.image = [];
+            return page;
+          });
         vm.allObjects = vm.pages.map(() => []);
         vm.pagesScale = Array(numPages).fill(1);
         console.log("suscess");
-        // vm.renderPdf(pdf);
       } catch (e) {
         console.log("Failed to add pdf.");
         throw e;
@@ -157,33 +164,11 @@ export default {
       pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
       return pdfjs.getDocument(url).promise;
     },
-    renderPdf: function renderPdf(pdf) {
-      (async () => {
-        const page = await pdf.getPage(1);
-        const outputScale = window.devicePixelRatio || 1;
-        const desiredWidth = 300;
-        let viewport = page.getViewport({ scale: 1 });
-        const scale = desiredWidth / viewport.width;
-        viewport = page.getViewport({ scale });
-
-        const canvas = document.getElementById("the-canvas");
-        const context = canvas.getContext("2d");
-
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = Math.floor(viewport.width) + "px";
-        canvas.style.height = Math.floor(viewport.height) + "px";
-
-        const transform =
-          outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-        const renderContext = {
-          canvasContext: context,
-          transform,
-          viewport,
-        };
-        page.render(renderContext);
-      })();
+    addImage(page) {
+      page.image = this.image;
+    },
+    addImageToPdf: async function addImageToPdf(sign) {
+      this.image = sign;
     },
     getSignUrl() {
       this.signs.forEach((e) => {
