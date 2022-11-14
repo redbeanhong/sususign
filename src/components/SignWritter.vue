@@ -2,13 +2,35 @@
   <div id="sign" :class="[isShow ? 'isShow' : '']" @click="hideSign">
     <div class="sign-container" @click.stop="">
       <div class="sign-header">
-        <button>手寫</button>
-        <button>打字</button>
-        <button>圖片</button>
+        <button @click="writeType = 'hand'">手寫</button>
+        <button @click="writeType = 'keyIn'">打字</button>
+        <button @click="writeType = 'image'">圖片</button>
         <button @click="saveImage">保存</button>
       </div>
       <div class="sign-body">
-        <canvas id="sign-writter" :width="width" :height="height" />
+        <canvas
+          v-if="writeType == 'hand'"
+          id="sign-writter"
+          :width="width"
+          :height="height"
+        />
+        <input
+          v-if="writeType == 'keyIn'"
+          v-model="textSign"
+          type="text"
+          :width="width"
+          :height="height"
+          placeholder="在此輸入簽名"
+        />
+        <div class="imgArea" v-if="writeType == 'image'">
+          <input
+            v-if="imgPreview == ''"
+            accept="image/*"
+            type="file"
+            @change="onUploadImg($event)"
+          />
+          <img v-else id="imgPreview" :src="imgPreview" alt="imgPreview" />
+        </div>
       </div>
       <div class="sign-footer">
         <button @click="clearCanvas">清除</button>
@@ -48,6 +70,16 @@
   background-color: antiquewhite;
   border: 1px solid gray;
 }
+.imgArea {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#imgPreview {
+  height: 100%;
+}
 </style>
 <script>
 export default {
@@ -61,6 +93,9 @@ export default {
       ctx: null,
       width: 200,
       height: 200,
+      writeType: "hand",
+      imgPreview: "",
+      textSign: "",
     };
   },
   methods: {
@@ -103,12 +138,57 @@ export default {
       var w = vm.canvas.width;
       var h = vm.canvas.height;
       vm.ctx.clearRect(0, 0, w, h);
+      vm.imgPreview = "";
     },
     saveImage() {
       const vm = this;
-      const newImg = vm.canvas.toDataURL("image/png");
+      let newImg = null;
+      if (vm.writeType == "hand") {
+        newImg = vm.canvas.toDataURL("image/png");
+      } else if (vm.writeType == "image") {
+        newImg = vm.imgPreview;
+      } else if (vm.writeType == "keyIn") {
+        const vm = this;
+        const canvas = document.createElement("canvas");
+        canvas.width = vm.width;
+        canvas.height = vm.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.strokeStyle = "#BADA55"; // 線條顏色
+        ctx.textAlign = "center";
+        ctx.lineWidth = 5; // 線條寬度
+        ctx.font = `100px Georgia`;
+        ctx.fillText(
+          vm.textSign,
+          canvas.width / 2,
+          canvas.height / 2 + 40,
+          canvas.width
+        );
+        newImg = canvas.toDataURL("image/png");
+      }
+
       localStorage.setItem(vm.signer.name, newImg);
+      vm.writeType = "hand";
       vm.hideSign();
+    },
+    onUploadImg(e) {
+      const vm = this;
+      const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
+      console.log(files);
+      const file = files[0];
+      const reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        () => {
+          vm.imgPreview = reader.result;
+          console.log(reader.result);
+        },
+        false
+      );
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     },
     changeColor() {
       const vm = this;
@@ -120,7 +200,7 @@ export default {
     },
     updateWritter() {
       const vm = this;
-      this.width = this.canvas.parentElement.offsetWidth;
+      this.width = document.querySelector(".sign-body").offsetWidth;
       if (vm.signer.imgUrl) {
         const img = new Image(); // Create new img element
         img.src = vm.signer.imgUrl;
