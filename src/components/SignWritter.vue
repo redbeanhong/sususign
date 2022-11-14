@@ -30,6 +30,7 @@
 
   &.isShow {
     display: flex;
+    z-index: 99;
   }
 }
 .sign-container {

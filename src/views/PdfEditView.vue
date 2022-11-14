@@ -37,7 +37,7 @@ import SignWritter from "../components/SignWritter.vue";
                   <li v-for="(sign, index) in editSignList" :key="index">
                     <a href="#" @click="deleteSign(sign.name)">刪除</a>
                     <a href="#" @click="openSign(sign)">修改</a>
-                    <div class="btn" @click="addImageToPdf(sign)">
+                    <div class="btn" @dragstart="addImageToPdf(sign)">
                       <img :src="sign.imgUrl" alt="sign" style="width: 100%" />
                     </div>
                   </li>
@@ -66,7 +66,9 @@ import SignWritter from "../components/SignWritter.vue";
               :image="page.image"
               :key="index"
               :name="'pdf' + index"
-              @click="addImage(page)"
+              :images="pagesImages[index]"
+              :pageScale="pagesScale[index]"
+              @drop="addImage(index)"
             />
           </div>
         </div>
@@ -104,9 +106,9 @@ export default {
       pdfFile: null,
       pdfName: "",
       pages: [],
-      selectedPageIndex: -1,
-      allObjects: [],
+      pagesImages: [],
       pagesScale: [],
+      selectedPageIndex: -1,
       isWritter: false,
       signer: "",
       signs: [
@@ -148,7 +150,7 @@ export default {
             page.image = [];
             return page;
           });
-        vm.allObjects = vm.pages.map(() => []);
+        vm.pagesImages = vm.pages.map(() => []);
         vm.pagesScale = Array(numPages).fill(1);
         console.log("suscess");
       } catch (e) {
@@ -164,11 +166,15 @@ export default {
       pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
       return pdfjs.getDocument(url).promise;
     },
-    addImage(page) {
-      page.image = this.image;
+    addImage(index) {
+      if (this.image == {}) return;
+      this.pagesImages[index].push(this.image);
+      console.log(this.pagesImages);
+      this.image = {};
     },
     addImageToPdf: async function addImageToPdf(sign) {
       this.image = sign;
+      console.log(sign.imgUrl);
     },
     getSignUrl() {
       this.signs.forEach((e) => {

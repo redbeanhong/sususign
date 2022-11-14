@@ -8,7 +8,8 @@ export default {
   props: {
     page: Object,
     name: String,
-    image: Object,
+    images: Array,
+    pageScale: Object,
   },
   data() {
     return {
@@ -68,14 +69,13 @@ export default {
         scaleY: scale,
       });
     },
-    addImage: async function addImage() {
+    addImage: async function addImage(imageUrl) {
       const vm = this;
-      if (vm.image == {}) return;
 
       const { fabric } = await import("fabric");
-      fabric.Image.fromURL(vm.image.imgUrl, function (image) {
+      fabric.Image.fromURL(imageUrl, function (image) {
         // 設定簽名出現的位置及大小，後續可調整
-        console.log(vm.image.imgUrl);
+        console.log(imageUrl);
         image.top = 100;
         image.scaleX = 1;
         image.scaleY = 1;
@@ -87,10 +87,13 @@ export default {
     this.render();
   },
   watch: {
-    image() {
-      if (this.image != {}) {
-        this.addImage();
-      }
+    images: {
+      handler: function (val) {
+        if (val.length > 0) {
+          this.addImage(val[val.length - 1].imgUrl);
+        }
+      },
+      deep: true,
     },
   },
 };
