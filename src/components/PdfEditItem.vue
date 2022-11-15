@@ -6,6 +6,7 @@
 <script>
 export default {
   props: {
+    index: Number,
     page: Object,
     name: String,
     images: Array,
@@ -75,12 +76,21 @@ export default {
       const { fabric } = await import("fabric");
       fabric.Image.fromURL(imageUrl, function (image) {
         // 設定簽名出現的位置及大小，後續可調整
-        console.log(imageUrl);
         image.top = 100;
         image.scaleX = 1;
         image.scaleY = 1;
         vm.canvas.add(image);
       });
+    },
+    updateCanvas() {
+      const vm = this;
+
+      const canvasData = {
+        index: vm.index,
+        canvas: vm.canvas,
+      };
+      console.log(canvasData);
+      this.$emit("update", canvasData);
     },
   },
   created() {
@@ -92,6 +102,12 @@ export default {
         if (val.length > 0) {
           this.addImage(val[val.length - 1].imgUrl);
         }
+      },
+      deep: true,
+    },
+    canvas: {
+      handler: function () {
+        this.updateCanvas();
       },
       deep: true,
     },

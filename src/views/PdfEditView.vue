@@ -1,8 +1,8 @@
 <script setup>
 import PdfEditItem from "../components/PdfEditItem.vue";
 import SignWritter from "../components/SignWritter.vue";
+import jsPDF from "jspdf";
 </script>
-
 <template>
   <main>
     <div class="container">
@@ -18,7 +18,7 @@ import SignWritter from "../components/SignWritter.vue";
         </h2>
         <div class="btn-group">
           <div class="btn">重新</div>
-          <div class="btn">完成</div>
+          <div class="btn" @click="downloadPdf">完成</div>
         </div>
       </nav>
       <div class="row">
@@ -62,6 +62,7 @@ import SignWritter from "../components/SignWritter.vue";
           <div id="main-pdf">
             <PdfEditItem
               v-for="(page, index) in pages"
+              :index="index"
               :page="page.data"
               :image="page.image"
               :key="index"
@@ -69,6 +70,7 @@ import SignWritter from "../components/SignWritter.vue";
               :images="pagesImages[index]"
               :pageScale="pagesScale[index]"
               @drop="addImage(index)"
+              @update="updateCanvas"
             />
           </div>
         </div>
@@ -108,6 +110,7 @@ export default {
       pages: [],
       pagesImages: [],
       pagesScale: [],
+      pagesCanvas: [],
       selectedPageIndex: -1,
       isWritter: false,
       signer: "",
@@ -123,7 +126,6 @@ export default {
     onUploadPDF: async function onUploadPDF(e) {
       const vm = this;
       const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
-      console.log(files);
       const file = files[0];
       if (!file || file.type !== "application/pdf") return;
       vm.selectedPageIndex = -1;
@@ -151,6 +153,7 @@ export default {
             return page;
           });
         vm.pagesImages = vm.pages.map(() => []);
+        vm.pagesCanvas = vm.pages.map(() => {});
         vm.pagesScale = Array(numPages).fill(1);
         console.log("suscess");
       } catch (e) {
@@ -169,12 +172,10 @@ export default {
     addImage(index) {
       if (this.image == {}) return;
       this.pagesImages[index].push(this.image);
-      console.log(this.pagesImages);
       this.image = {};
     },
     addImageToPdf: async function addImageToPdf(sign) {
       this.image = sign;
-      console.log(sign.imgUrl);
     },
     getSignUrl() {
       this.signs.forEach((e) => {
@@ -200,6 +201,25 @@ export default {
         localStorage.removeItem(user);
         vm.getSignUrl();
       }
+    },
+    downloadPdf: async function downloadPdf() {
+      const pdf = new jsPDF();
+      this.pagesCanvas.forEach((canvas, index) => {
+        console.log("頁面");
+        const image = canvas.toDataURL("image/png");
+
+        // 設定背景在 PDF 中的位置及大小
+        const width = pdf.internal.pageSize.width;
+        const height = pdf.internal.pageSize.height;
+        pdf.addImage(image, "png", 0, 0, width, height);
+        if (index < this.pagesCanvas.length - 1) pdf.addPage();
+      });
+
+      // 將檔案取名並下載
+      pdf.save("download.pdf");
+    },
+    updateCanvas(canvasData) {
+      this.pagesCanvas[canvasData.index] = canvasData.canvas;
     },
   },
   computed: {
