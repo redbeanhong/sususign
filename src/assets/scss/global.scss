@@ -1,2 +1,4 @@
-@import "./cssReset.scss";
-@import "./grid.scss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+@import "./helper/_cssReset.scss";
+@import "./helper/base.scss";
+@import "./helper/_grid.scss";

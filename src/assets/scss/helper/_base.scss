@@ -1,0 +1,55 @@
+$base-font-size: 1rem;
+$title-font-size: 1.25rem;
+$small-font-size: 0.875rem;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-line-height-base: 1.35;
+
+$color-primary: #4abb9c;
+$color-secondary: #f0bc6e;
+$color-disabled: #dadada;
+
+$phone_breakpoints: 576px;
+$mobile_breakpoints: 992px;
+$mobile_container: 960px;
+$computer_container: 1140px;
+
+@mixin tablets {
+  @media (min-width: $phone_breakpoints) {
+    @content;
+  }
+}
+@mixin computer {
+  @media only screen and (min-width: $mobile_breakpoints) {
+    @content;
+  }
+}
+
+*,
+body {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+body {
+  font-size: $base-font-size;
+  color: $color-primary;
+  line-height: $font-line-height-base;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-size: $title-font-size;
+  font-weight: $font-weight-normal;
+}
+
+small {
+  font-size: $small-font-size;
+}
+
+b,
+strong {
+  font-weight: $font-weight-bold;
+}
