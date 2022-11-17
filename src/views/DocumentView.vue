@@ -1,5 +1,3 @@
 <template>
-  <main>
-    <h1>Document</h1>
-  </main>
+  <h1>Document</h1>
 </template>

@@ -1,5 +1,3 @@
 <template>
-  <main>
-    <h1>ConfigView</h1>
-  </main>
+  <h1>ConfigView</h1>
 </template>

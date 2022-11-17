@@ -4,80 +4,78 @@ import SignWritter from "../components/SignWritter.vue";
 import jsPDF from "jspdf";
 </script>
 <template>
-  <main>
-    <div class="container">
-      <nav class="pdfEdit-nas">
-        <h2>
-          {{ pdfTitle }}
-          <input
-            accept=".pdf"
-            type="file"
-            id="uploadPDF"
-            @change="onUploadPDF($event)"
-          />
-        </h2>
-        <div class="btn-group">
-          <div class="btn">重新</div>
-          <div class="btn" @click="downloadPdf">完成</div>
-        </div>
-      </nav>
-      <div class="row">
-        <div class="col-3">
-          <aside>
-            <div class="card">
-              <div class="card-head">到期日</div>
-              <div class="card-body">
-                <input type="date" name="dateline" id="dateline" />
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-head">工具</div>
-              <div class="card-body">
-                <ul>
-                  <li v-for="(sign, index) in editSignList" :key="index">
-                    <a href="#" @click="deleteSign(sign.name)">刪除</a>
-                    <a href="#" @click="openSign(sign)">修改</a>
-                    <div class="btn" @dragstart="addImageToPdf(sign)">
-                      <img :src="sign.imgUrl" alt="sign" style="width: 100%" />
-                    </div>
-                  </li>
-                  <li v-if="addSignList.length > 0">
-                    <div class="btn" @click="openSign(addSignList[0])">
-                      新增簽名
-                    </div>
-                  </li>
-                  <li><div class="btn">新增文字</div></li>
-                  <li><div class="btn">新增時間</div></li>
-                </ul>
-              </div>
-            </div>
-          </aside>
-        </div>
-        <div class="col-6">
-          <SignWritter
-            :isShow="isWritter"
-            :signer="signer"
-            @hideSign="hideSign"
-          />
-          <div id="main-pdf">
-            <PdfEditItem
-              v-for="(page, index) in pages"
-              :index="index"
-              :page="page.data"
-              :image="page.image"
-              :key="index"
-              :name="'pdf' + index"
-              :images="pagesImages[index]"
-              :pageScale="pagesScale[index]"
-              @drop="addImage(index)"
-              @update="updateCanvas"
-            />
-          </div>
-        </div>
-        <div class="col-3"></div>
+  <div class="container">
+    <nav class="pdfEdit-nas">
+      <h2>
+        {{ pdfTitle }}
+        <input
+          accept=".pdf"
+          type="file"
+          id="uploadPDF"
+          @change="onUploadPDF($event)"
+        />
+      </h2>
+      <div class="btn-group">
+        <div class="btn">重新</div>
+        <div class="btn" @click="downloadPdf">完成</div>
       </div>
+    </nav>
+    <div class="row">
+      <div class="col-3">
+        <aside>
+          <div class="card">
+            <div class="card-head">到期日</div>
+            <div class="card-body">
+              <input type="date" name="dateline" id="dateline" />
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">工具</div>
+            <div class="card-body">
+              <ul>
+                <li v-for="(sign, index) in editSignList" :key="index">
+                  <a href="#" @click="deleteSign(sign.name)">刪除</a>
+                  <a href="#" @click="openSign(sign)">修改</a>
+                  <div class="btn" @dragstart="addImageToPdf(sign)">
+                    <img :src="sign.imgUrl" alt="sign" style="width: 100%" />
+                  </div>
+                </li>
+                <li v-if="addSignList.length > 0">
+                  <div class="btn" @click="openSign(addSignList[0])">
+                    新增簽名
+                  </div>
+                </li>
+                <li><div class="btn">新增文字</div></li>
+                <li><div class="btn">新增時間</div></li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="col-6">
+        <SignWritter
+          :isShow="isWritter"
+          :signer="signer"
+          @hideSign="hideSign"
+        />
+        <div id="main-pdf">
+          <PdfEditItem
+            v-for="(page, index) in pages"
+            :index="index"
+            :page="page.data"
+            :image="page.image"
+            :key="index"
+            :name="'pdf' + index"
+            :images="pagesImages[index]"
+            :pageScale="pagesScale[index]"
+            @drop="addImage(index)"
+            @update="updateCanvas"
+          />
+        </div>
+      </div>
+      <div class="col-3"></div>
     </div>
-  </main>
+  </div>
 </template>
 <style lang="scss">
 $default_color: #323232;
