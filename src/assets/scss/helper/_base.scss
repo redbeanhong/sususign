@@ -5,7 +5,10 @@ $font-weight-normal: 400;
 $font-weight-bold: 700;
 $font-line-height-base: 1.35;
 
+$color-light: #ffffff;
 $color-primary: #4abb9c;
+$color-primary-dark:#5aac93;
+$color-primary-active: #85cdb9;
 $color-secondary: #f0bc6e;
 $color-disabled: #dadada;
 
@@ -25,6 +28,11 @@ $computer_container: 1140px;
   }
 }
 
+@mixin background-primary{
+  background-color: $color-primary;
+  background: linear-gradient(180deg, $color-primary 0%, $color-primary-dark 100%);
+}
+
 *,
 body {
   font-family: "Noto Sans TC", sans-serif;
@@ -34,6 +42,15 @@ body {
   font-size: $base-font-size;
   color: $color-primary;
   line-height: $font-line-height-base;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary-active;
+  }
 }
 
 h1,

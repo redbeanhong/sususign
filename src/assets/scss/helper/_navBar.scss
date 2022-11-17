@@ -1,0 +1,36 @@
+#nav {
+  display: flex;
+  padding: 0.5em 0;
+  background: rgba(238, 238, 238, 0.5);
+  box-shadow: 4px 4px 8px rgba(134, 134, 134, 0.25);
+  backdrop-filter: blur(2px);
+}
+
+h1 {
+  background-image: url("@/assets/img/logo-big.png");
+  width: 175px;
+  height: 45px;
+  text-indent: 101%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  & .links {
+    display: flex;
+    & > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $title-font-size;
+      margin-left: 3rem;
+    }
+  }
+}

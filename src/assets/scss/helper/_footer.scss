@@ -1,0 +1,7 @@
+#footer {
+  color: $color-light;
+  text-align: center;
+  padding: 2rem;
+  align-self: flex-end;
+  @include background-primary;
+}
