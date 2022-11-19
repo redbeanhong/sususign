@@ -5,10 +5,10 @@ import FooterBar from "./components/FooterBar.vue";
 </script>
 
 <template>
+  <header id="header">
+    <NavBar />
+  </header>
   <main id="main">
-    <header>
-      <NavBar />
-    </header>
     <RouterView />
   </main>
   <footer id="footer">
@@ -20,12 +20,11 @@ import FooterBar from "./components/FooterBar.vue";
 #app {
   min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
+  flex-direction: column;
 }
 
-#main,
-#footer {
-  width: 100%;
+#main {
+  flex-grow: 1;
+  display: flex;
 }
 </style>

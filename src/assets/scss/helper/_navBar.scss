@@ -1,9 +1,8 @@
 #nav {
+  position: relative;
+  z-index: 2;
   display: flex;
-  padding: 0.5em 0;
-  background: rgba(238, 238, 238, 0.5);
-  box-shadow: 4px 4px 8px rgba(134, 134, 134, 0.25);
-  backdrop-filter: blur(2px);
+  @include background-secondary;
 }
 
 h1 {
@@ -18,19 +17,69 @@ h1 {
   background-repeat: no-repeat;
 }
 .navbar {
-  display: flex;
+  padding: 0 1rem;
   justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
+  display: flex;
 
-  & .links {
+  .hamburger {
+    padding: 1rem 0.5rem;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+      .links-phone {
+        display: block;
+      }
+    }
+    @include tablets {
+      display: none;
+    }
+
+    .links-phone {
+      @include background-secondary;
+      border-radius: $border-radius-base;
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: -100%;
+      width: 100vw;
+      padding: 1rem;
+      > a {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .links {
+    padding: 0.5rem 0;
+    display: none;
+    @include tablets {
+      display: flex;
+    }
+
     & > a {
+      padding: 1rem 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: $title-font-size;
-      margin-left: 3rem;
+
+      @include tablets {
+        margin-left: 1rem;
+      }
+      @include computer {
+        margin-left: 2rem;
+      }
+
+      &.router-link-active {
+        border-bottom: 4px solid $color-primary;
+      }
     }
   }
 }
