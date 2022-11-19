@@ -187,6 +187,29 @@ strong {
   }
 }
 
+.card-temp {
+  .card-title {
+    @include background-primary;
+    color: $color-light;
+    padding: 1.2rem;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 4px 4px 8px $color-secondary-shadow;
+  }
+
+  .card-content {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 4px 4px 8px $color-secondary-shadow;
+    backdrop-filter: blur(2px);
+
+    &.card-content-center {
+      align-items: center;
+    }
+  }
+}
+
 .icon {
   cursor: pointer;
 }
