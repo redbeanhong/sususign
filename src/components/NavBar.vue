@@ -17,7 +17,7 @@ import { RouterLink } from "vue-router";
               <img src="@/assets/img/icon/iconFile.png" alt="File" />
               文件
             </RouterLink>
-            <RouterLink to="/config">
+            <RouterLink to="/config/signs">
               <img src="@/assets/img/icon/iconSetting.png" alt="Setting" />
               設定
             </RouterLink>
@@ -32,7 +32,7 @@ import { RouterLink } from "vue-router";
             <img src="@/assets/img/icon/iconFile.png" alt="File" />
             文件
           </RouterLink>
-          <RouterLink to="/config">
+          <RouterLink to="/config/signs">
             <img src="@/assets/img/icon/iconSetting.png" alt="Setting" />
             設定
           </RouterLink>

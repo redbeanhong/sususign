@@ -13,6 +13,7 @@ $color-secondary: #dadada;
 $color-secondary-shadow: rgba(134, 134, 134, 0.25);
 $color-warning: #f0bc6e;
 $color-disabled: #dadada;
+$color-disabled-light: #eeeeee;
 
 $border-radius-base: 8px;
 
@@ -90,15 +91,19 @@ strong {
   padding: 0.8rem 1.5rem;
   border-radius: 0.25rem;
 
-  background: linear-gradient(
-    180deg,
-    $color-primary 0%,
-    $color-primary-dark 100%
-  );
-  color: $color-light;
+  background: rgba($color-light, 0.8);
+  border: 2px solid $color-primary;
+  border-radius: 0.25rem;
+  color: $color-primary;
 
-  &.active {
-    background: $color-primary-active;
+  &.active,
+  &.router-link-active {
+    background: linear-gradient(
+      180deg,
+      $color-primary 0%,
+      $color-primary-dark 100%
+    );
+    color: $color-light;
   }
 
   &:hover {
@@ -107,14 +112,18 @@ strong {
       $color-primary 0%,
       $color-primary-active 100%
     );
+    color: $color-light;
   }
 
-  &.unselect {
-    background: rgba($color-light, 0.8);
-    border: 2px solid $color-primary;
-    border-radius: 0.25rem;
-    color: $color-primary;
-    cursor: not-allowed;
+  &.disabled {
+    cursor: default;
+    background: $color-disabled-light;
+    color: $color-disabled;
+    border: 2px solid $color-disabled-light;
+  }
+
+  &.menu-big {
+    padding: 0.8rem 3rem;
   }
 }
 
@@ -165,7 +174,7 @@ strong {
 
   &.active {
     color: $color-light;
-    background: $color-primary-active;
+    background: $color-primary;
   }
 
   &.disabled {
@@ -220,4 +229,24 @@ strong {
 
 .mr-5 {
   margin-right: 3rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
 }
