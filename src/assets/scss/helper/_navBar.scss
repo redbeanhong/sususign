@@ -64,12 +64,22 @@ h1 {
     }
 
     & > a {
+      position: relative;
       padding: 1rem 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: $title-font-size;
-
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.5rem;
+        width: 0%;
+        height: 4px;
+        background: $color-primary;
+        transition: 0.5s;
+      }
+      
       @include tablets {
         margin-left: 1rem;
       }
@@ -78,7 +88,9 @@ h1 {
       }
 
       &.router-link-active {
-        border-bottom: 4px solid $color-primary;
+        &::after {
+          width: 100%;
+        }
       }
     }
   }
