@@ -1,86 +1,76 @@
 <template>
   <div id="sign" :class="[isShow ? 'isShow' : '']" @click="hideSign">
     <div class="sign-container" @click.stop="">
-      <div class="sign-header">
-        <button @click="writeType = 'hand'">手寫</button>
-        <button @click="writeType = 'keyIn'">打字</button>
-        <button @click="writeType = 'image'">圖片</button>
-        <button @click="saveImage">保存</button>
+      <div class="sign-header mb-2">
+        <ul class="sign-header-item">
+          <li
+            class="btn-menu mr-1"
+            :class="{ active: writeType == 'hand' }"
+            @click="writeType = 'hand'"
+          >
+            手寫
+          </li>
+          <li
+            class="btn-menu mr-1"
+            :class="{ active: writeType == 'keyIn' }"
+            @click="writeType = 'keyIn'"
+          >
+            打字
+          </li>
+          <li
+            class="btn-menu"
+            :class="{ active: writeType == 'image' }"
+            @click="writeType = 'image'"
+          >
+            圖片
+          </li>
+        </ul>
+        <div
+          class="sign-header-item btn-save btn btn-big btn-primary"
+          @click="saveImage"
+        >
+          儲存
+        </div>
       </div>
-      <div class="sign-body">
+      <div class="sign-body mb-2">
         <canvas
           v-if="writeType == 'hand'"
           id="sign-writter"
           :width="width"
           :height="height"
         />
-        <input
-          v-if="writeType == 'keyIn'"
-          v-model="textSign"
-          type="text"
-          :width="width"
-          :height="height"
-          placeholder="在此輸入簽名"
-        />
-        <div class="imgArea" v-if="writeType == 'image'">
+        <div class="input-name" v-if="writeType == 'keyIn'">
           <input
-            v-if="imgPreview == ''"
-            accept="image/*"
-            type="file"
-            @change="onUploadImg($event)"
+            v-model="textSign"
+            type="text"
+            :width="width"
+            :height="height"
+            placeholder="在此輸入簽名"
           />
+        </div>
+        <div class="imgArea" v-if="writeType == 'image'">
+          <div v-if="imgPreview == ''">
+            <input
+              accept="image/*"
+              type="file"
+              @change="onUploadImg($event)"
+              id="upload-img"
+              hidden
+            />
+            <label for="upload-img" class="btn-add">
+              <img src="@/assets/img/icon/iconAdd.png" alt="add" />
+              <p>新增</p>
+            </label>
+          </div>
           <img v-else id="imgPreview" :src="imgPreview" alt="imgPreview" />
         </div>
       </div>
       <div class="sign-footer">
-        <button @click="clearCanvas">清除</button>
+        <div class="btn btn-big btn-primary" @click="clearCanvas">清除</div>
       </div>
     </div>
   </div>
 </template>
-<style lang="scss" scope>
-#sign {
-  top: 0;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  display: none;
-  background-color: rgba(203, 201, 201, 0.7);
-
-  &.isShow {
-    display: flex;
-    z-index: 99;
-  }
-}
-.sign-container {
-  width: 100%;
-  max-width: 600px;
-  padding: 15px;
-  background-color: white;
-  .sign-body {
-    width: 100%;
-    min-height: 100px;
-  }
-}
-
-#sign-writter {
-  background-color: antiquewhite;
-  border: 1px solid gray;
-}
-.imgArea {
-  width: 100%;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#imgPreview {
-  height: 100%;
-}
-</style>
 <script>
 export default {
   props: {
@@ -92,7 +82,7 @@ export default {
       canvas: null,
       ctx: null,
       width: 200,
-      height: 200,
+      height: 150,
       writeType: "hand",
       imgPreview: "",
       textSign: "",

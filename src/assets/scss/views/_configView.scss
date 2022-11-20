@@ -31,7 +31,7 @@
 
   .tags {
     padding: 2rem;
-    box-shadow: 4px 4px 8px $color-secondary-shadow;
+    @include box-showdow;
     border: 1px solid $color-disabled-light;
     border-radius: $border-radius-base;
     th {
