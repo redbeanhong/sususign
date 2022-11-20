@@ -73,6 +73,7 @@ export default {
         id,
       };
       try {
+        localStorage.setItem(id, pdfBlob);
         if (JSON.parse(localStorage.getItem("userPdfs")) !== null) {
           localStorage.setItem(
             "userPdfs",
@@ -84,11 +85,9 @@ export default {
         } else {
           localStorage.setItem("userPdfs", JSON.stringify([userPdfs]));
         }
-
-        localStorage.setItem(id, pdfBlob);
         this.$router.push(`/pdf_edit/${id}`);
       } catch (e) {
-        alert("上傳失敗");
+        alert(e);
       }
     },
     readBlob(blob) {

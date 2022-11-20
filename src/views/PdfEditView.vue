@@ -13,7 +13,7 @@ import jsPDF from "jspdf";
             {{ pdfTitle }}
           </h2>
           <div class="btn-group">
-            <div class="btn btn-big btn-primary mr-2">重新</div>
+            <!-- <div class="btn btn-big btn-primary mr-2">重新</div> -->
             <div class="btn btn-big btn-primary" @click="downloadPdf">完成</div>
           </div>
         </nav>
@@ -77,7 +77,7 @@ import jsPDF from "jspdf";
                       新增簽名
                     </div>
                   </li>
-                  <li>
+                  <!-- <li>
                     <div class="tool-btn">
                       <img
                         src="@/assets/img/icon/iconAddText.png"
@@ -94,7 +94,7 @@ import jsPDF from "jspdf";
                       />
                       新增時間
                     </div>
-                  </li>
+                  </li> -->
                 </ul>
               </template>
             </CardTemp>
@@ -142,7 +142,7 @@ export default {
       pagesCanvas: [],
       dateLine: "",
       isWritter: false,
-      signer: "",
+      signer: {},
       signs: [
         { name: "user1_sign", imgUrl: "" },
         { name: "user2_sign", imgUrl: "" },
@@ -156,7 +156,6 @@ export default {
       const vm = this;
       try {
         const pdf = await vm.readAsPDF();
-        console.log(pdf);
         vm.pdfWindowWidth =
           document.querySelector("#main-pdf").offsetWidth - 60;
         const numPages = pdf.numPages;
@@ -171,8 +170,8 @@ export default {
         vm.pagesImages = vm.pages.map(() => []);
         vm.pagesCanvas = vm.pages.map(() => {});
         vm.pagesScale = Array(numPages).fill(1);
-        console.log("suscess");
       } catch (e) {
+        console.log(e);
         console.log("Failed to add pdf.");
         throw e;
       }
@@ -233,17 +232,23 @@ export default {
 
       const pdfBlob = pdf.output("blob");
       const data = await this.readBlob(pdfBlob);
-      localStorage.setItem(this.pdfId, data);
-      const pdfData = JSON.parse(localStorage.getItem("userPdfs")).map((e) => {
-        if (e.id == this.pdfId) {
-          e.dateLine = this.dateLine;
-          return e;
-        } else {
-          return e;
-        }
-      });
-      localStorage.setItem("userPdfs", JSON.stringify(pdfData));
-      console.log(pdfBlob);
+      try {
+        const pdfData = JSON.parse(localStorage.getItem("userPdfs")).map(
+          (e) => {
+            if (e.id == this.pdfId) {
+              e.dateLine = this.dateLine;
+              return e;
+            } else {
+              return e;
+            }
+          }
+        );
+        localStorage.setItem("userPdfs", JSON.stringify(pdfData));
+        localStorage.setItem(this.pdfId, data);
+      } catch (e) {
+        console.log(e);
+      }
+
       this.downloadBlobPdf(pdfBlob);
       this.$router.push({ path: `/pdf_download/${this.pdfId}` });
     },
