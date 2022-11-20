@@ -125,8 +125,8 @@ export default {
     },
     clearCanvas() {
       const vm = this;
-      var w = vm.canvas.width;
-      var h = vm.canvas.height;
+      const w = vm.canvas.width;
+      const h = vm.canvas.height;
       vm.ctx.clearRect(0, 0, w, h);
       vm.imgPreview = "";
     },

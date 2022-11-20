@@ -235,6 +235,7 @@ export default {
       const pdfData = JSON.parse(localStorage.getItem("userPdfs")).map((e) => {
         if (e.id == this.pdfId) {
           e.dateLine = this.dateLine;
+          e.status = "finished";
           return e;
         } else {
           return e;

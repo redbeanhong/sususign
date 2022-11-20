@@ -69,6 +69,7 @@ export default {
         tags: [],
         title: file.name,
         dateLine: "",
+        status: "sign",
         id,
       };
       try {

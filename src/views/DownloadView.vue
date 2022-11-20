@@ -20,8 +20,8 @@ export default {
   methods: {
     downloadBlobPdf: async function downloadBlobPdf() {
       const blob = await localStorage.getItem(this.pdfId);
-      var aTag = document.createElement("a");
-      var blobPdf = new Blob([blob], { type: "application/pdf" });
+      const aTag = document.createElement("a");
+      const blobPdf = new Blob([blob], { type: "application/pdf" });
       aTag.download = "download.pdf";
       aTag.href = URL.createObjectURL(blobPdf);
       aTag.click();
