@@ -33,7 +33,14 @@ const router = createRouter({
     {
       path: "/pdf_edit/:pdfId",
       name: "pdf_edit",
+      props: true,
       component: () => import("../views/PdfEditView.vue"),
+    },
+    {
+      path: "/pdf_download/:pdfId",
+      name: "pdf_download",
+      props: true,
+      component: () => import("../views/DownloadView.vue"),
     },
   ],
 });

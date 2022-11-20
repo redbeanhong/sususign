@@ -11,12 +11,6 @@ import jsPDF from "jspdf";
         <nav class="col-12 pdfEdit-nav mb-5">
           <h2>
             {{ pdfTitle }}
-            <input
-              accept=".pdf"
-              type="file"
-              id="uploadPDF"
-              @change="onUploadPDF($event)"
-            />
           </h2>
           <div class="btn-group">
             <div class="btn btn-big btn-primary mr-2">重新</div>
@@ -31,7 +25,12 @@ import jsPDF from "jspdf";
               <template v-slot:title>到期日</template>
               <template v-slot:content>
                 <div class="input-date">
-                  <input type="date" name="dateline" id="dateline" />
+                  <input
+                    v-model="dateLine"
+                    type="date"
+                    name="dateline"
+                    id="dateline"
+                  />
                   <label for="dateline">
                     <img
                       class="icon"
@@ -131,17 +130,17 @@ import jsPDF from "jspdf";
 </template>
 <script>
 export default {
+  props: { pdfId: String },
   data() {
     return {
       pdfTitle: "檔案標題",
-      pdfFile: null,
       pdfName: "",
       pdfWindowWidth: 0,
       pages: [],
       pagesImages: [],
       pagesScale: [],
       pagesCanvas: [],
-      selectedPageIndex: -1,
+      dateLine: "",
       isWritter: false,
       signer: "",
       signs: [
@@ -153,26 +152,11 @@ export default {
     };
   },
   methods: {
-    onUploadPDF: async function onUploadPDF(e) {
-      const vm = this;
-      const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
-      const file = files[0];
-      if (!file || file.type !== "application/pdf") return;
-      vm.selectedPageIndex = -1;
-      try {
-        await vm.addPDF(file);
-        vm.selectedPageIndex = 0;
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    addPDF: async function addPDF(file) {
+    addPDF: async function addPDF() {
       const vm = this;
       try {
-        const pdf = await vm.readAsPDF(file);
+        const pdf = await vm.readAsPDF();
         console.log(pdf);
-        vm.pdfName = file.name;
-        vm.pdfFile = file;
         vm.pdfWindowWidth =
           document.querySelector("#main-pdf").offsetWidth - 60;
         const numPages = pdf.numPages;
@@ -193,13 +177,14 @@ export default {
         throw e;
       }
     },
-    readAsPDF: async function readAsPDF(file) {
-      const blob = new Blob([file]);
-      const url = window.URL.createObjectURL(blob);
+    readAsPDF: async function readAsPDF() {
+      const pdfData = localStorage.getItem(this.pdfId);
+      const Base64Prefix = "data:application/pdf;base64,";
+      const data = atob(pdfData.substring(Base64Prefix.length));
       const pdfjs = await import("pdfjs-dist/build/pdf");
       const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
       pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-      return pdfjs.getDocument(url).promise;
+      return pdfjs.getDocument({ data }).promise;
     },
     addImage(index) {
       if (this.image == {}) return;
@@ -235,9 +220,8 @@ export default {
       }
     },
     downloadPdf: async function downloadPdf() {
-      const pdf = new jsPDF();
+      const pdf = new jsPDF("p", "pt", "a4", true);
       this.pagesCanvas.forEach((canvas, index) => {
-        console.log("頁面");
         const image = canvas.toDataURL("image/png");
 
         // 設定背景在 PDF 中的位置及大小
@@ -246,12 +230,33 @@ export default {
         pdf.addImage(image, "png", 0, 0, width, height);
         if (index < this.pagesCanvas.length - 1) pdf.addPage();
       });
-
-      // 將檔案取名並下載
-      pdf.save("download.pdf");
+      const pdfBlob = pdf.output("blob");
+      localStorage.setItem(this.pdfId, pdfBlob);
+      const pdfData = JSON.parse(localStorage.getItem("userPdfs")).map((e) => {
+        if (e.id == this.pdfId) {
+          e.dateLine = this.dateLine;
+          return e;
+        } else {
+          return e;
+        }
+      });
+      localStorage.setItem("userPdfs", JSON.stringify(pdfData));
+      this.$router.push({ path: `/pdf_download/${this.pdfId}` });
     },
     updateCanvas(canvasData) {
       this.pagesCanvas[canvasData.index] = canvasData.canvas;
+    },
+    getPdfData() {
+      const vm = this;
+      const pdfData = JSON.parse(localStorage.getItem("userPdfs"));
+      for (let i = 0; i < pdfData.length; i++) {
+        const e = pdfData[i];
+        if (e.id == vm.pdfId) {
+          vm.pdfTitle = e.title;
+          vm.dateLine = e.dateLine;
+          break;
+        }
+      }
     },
   },
   computed: {
@@ -264,6 +269,10 @@ export default {
   },
   created() {
     this.getSignUrl();
+    this.getPdfData();
+  },
+  mounted() {
+    this.addPDF();
   },
 };
 </script>

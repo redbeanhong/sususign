@@ -55,7 +55,7 @@ export default {
       const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
       const file = files[0];
       const id = "pdf" + Date.now();
-      if (!file || file.type !== "application/pdf"){
+      if (!file || file.type !== "application/pdf") {
         alert("只支援上傳PDF檔案類型");
         return;
       }
@@ -67,7 +67,8 @@ export default {
 
       const userPdfs = {
         tags: [],
-        title: "",
+        title: file.name,
+        dateLine: "",
         id,
       };
       try {
