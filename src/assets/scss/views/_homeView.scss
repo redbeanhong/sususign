@@ -33,6 +33,9 @@
     justify-content: center;
     flex-direction: column;
     padding: 6.6rem;
-    cursor: pointer;
+  }
+  
+  .limit{
+    color: $color-secondary;
   }
 }

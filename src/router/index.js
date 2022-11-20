@@ -31,7 +31,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/pdf_edit",
+      path: "/pdf_edit/:pdfId",
       name: "pdf_edit",
       component: () => import("../views/PdfEditView.vue"),
     },
