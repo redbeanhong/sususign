@@ -1,0 +1,81 @@
+#pdf {
+  width: 100%;
+
+  .pdfEdit-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tool-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+
+    & > img {
+      margin-right: 1rem;
+    }
+
+    &:hover {
+      color: $color-primary-active;
+    }
+  }
+  .input-date {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    label {
+      position: absolute;
+      right: 0;
+      top: calc(50% - 12px);
+    }
+
+    #dateline {
+      width: 100%;
+      border: none;
+      color: $color-primary;
+      letter-spacing: 0.3rem;
+    }
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    //display: none;
+    //-webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+    z-index: 99;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  #main-pdf {
+    height: 60vh;
+    overflow: scroll;
+    @include background-secondary;
+    padding: 1rem;
+    border-radius: $border-radius-base;
+  }
+
+  .sign-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem 0;
+    .sign-item-img {
+      flex: auto;
+      border: 1px solid #4abb9c;
+      border-radius: 4px;
+      & > img {
+        width: 100%;
+      }
+    }
+  }
+  .pdf-edit-item {
+    width: 100%;
+  }
+}

@@ -11,6 +11,7 @@ export default {
     name: String,
     images: Array,
     pageScale: Object,
+    width: Number,
   },
   data() {
     return {
@@ -19,14 +20,14 @@ export default {
   },
   methods: {
     render: async function render() {
-      const desiredWidth = 300;
       const vm = this;
+      const windowWith = await vm.width;
       const id = await vm.name;
       const canvas = document.createElement("canvas");
       const _page = await vm.page;
       const context = canvas.getContext("2d");
       let viewport = _page.getViewport({ scale: 1 });
-      const scale = desiredWidth / viewport.width;
+      const scale = windowWith / viewport.width;
       viewport = _page.getViewport({ scale });
 
       const outputScale = window.devicePixelRatio || 1;

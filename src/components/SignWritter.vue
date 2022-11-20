@@ -107,7 +107,7 @@ export default {
       vm.ctx.strokeStyle = "#BADA55"; // 線條顏色
       vm.ctx.lineJoin = "round"; // 線條連接樣式（轉角）
       vm.ctx.lineCap = "round"; // 線條結束樣式
-      vm.ctx.lineWidth = 5; // 線條寬度
+      vm.ctx.lineWidth = 20; // 線條寬度
       let isDrawing = false; // 判斷是否執行畫圖中
       let lastX = 0;
       let lastY = 0;
@@ -156,7 +156,7 @@ export default {
         const ctx = canvas.getContext("2d");
         ctx.strokeStyle = "#BADA55"; // 線條顏色
         ctx.textAlign = "center";
-        ctx.lineWidth = 5; // 線條寬度
+        ctx.lineWidth = 20; // 線條寬度
         ctx.font = `100px Georgia`;
         ctx.fillText(
           vm.textSign,
