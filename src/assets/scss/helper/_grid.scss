@@ -1,8 +1,3 @@
-$phone_breakpoints: 576px;
-$mobile_breakpoints: 992px;
-$mobile_container: 960px;
-$computer_container: 1140px;
-
 * {
   box-sizing: border-box;
 }
@@ -18,6 +13,10 @@ $computer_container: 1140px;
   }
 }
 
+.wrap-padding{
+  padding: 3rem 1rem 0 1rem;
+}
+
 .row {
   width: 100%;
   display: flex;
@@ -25,7 +24,7 @@ $computer_container: 1140px;
 }
 
 [class*="col-"] {
-  padding: 10px;
+  padding: 0 1rem;
   width: 100%;
 }
 .col-1 {
@@ -64,9 +63,7 @@ $computer_container: 1140px;
 .col-12 {
   width: 100%;
 }
-
-@media (min-width: $phone_breakpoints) {
-  /* For tablets: */
+@include tablets {
   .col-sm-1 {
     width: 8.33%;
   }
@@ -105,8 +102,7 @@ $computer_container: 1140px;
   }
 }
 
-@media only screen and (min-width: $mobile_breakpoints) {
-  /* For desktop: */
+@include computer() {
   .col-xl-1 {
     width: 8.33%;
   }

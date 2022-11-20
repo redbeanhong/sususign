@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +6,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: () => import("../views/HomeView.vue"),
     },
     {
       path: "/document",
@@ -18,11 +17,30 @@ const router = createRouter({
       path: "/config",
       name: "config",
       component: () => import("../views/ConfigView.vue"),
+      children: [
+        {
+          path: "signs",
+          name: "signs",
+          component: () => import("../views/ConfigView_Signs.vue"),
+        },
+        {
+          path: "tags",
+          name: "tags",
+          component: () => import("../views/ConfigView_Tags.vue"),
+        },
+      ],
     },
     {
-      path: "/pdf_edit",
+      path: "/pdf_edit/:pdfId",
       name: "pdf_edit",
+      props: true,
       component: () => import("../views/PdfEditView.vue"),
+    },
+    {
+      path: "/pdf_download/:pdfId",
+      name: "pdf_download",
+      props: true,
+      component: () => import("../views/DownloadView.vue"),
     },
   ],
 });

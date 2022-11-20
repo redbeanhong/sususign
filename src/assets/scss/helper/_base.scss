@@ -1,0 +1,286 @@
+$base-font-size: 1rem;
+$title-font-size: 1.25rem;
+$small-font-size: 0.875rem;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-line-height-base: 1.35;
+
+$color-light: #ffffff;
+$color-primary: #4abb9c;
+$color-primary-dark: #5aac93;
+$color-primary-active: #85cdb9;
+$color-secondary: #dadada;
+$color-secondary-shadow: rgba(134, 134, 134, 0.25);
+$color-warning: #f0bc6e;
+$color-disabled: #dadada;
+$color-disabled-light: #eeeeee;
+
+$border-radius-base: 8px;
+
+$phone_breakpoints: 576px;
+$mobile_breakpoints: 992px;
+$mobile_container: 960px;
+$computer_container: 1140px;
+
+@mixin tablets {
+  @media (min-width: $phone_breakpoints) {
+    @content;
+  }
+}
+@mixin computer {
+  @media only screen and (min-width: $mobile_breakpoints) {
+    @content;
+  }
+}
+
+@mixin background-primary {
+  background-color: $color-primary;
+  background: linear-gradient(
+    180deg,
+    $color-primary 0%,
+    $color-primary-dark 100%
+  );
+}
+
+@mixin background-secondary {
+  background-color: rgba($color-secondary, 0.5);
+  @include box-showdow;
+  backdrop-filter: blur(2px);
+}
+
+@mixin box-showdow {
+  box-shadow: 4px 4px 8px $color-secondary-shadow;
+}
+
+@mixin box-showdow-inset{
+  box-shadow: inset 4px 4px 8px $color-secondary-shadow;
+}
+*,
+body {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+body {
+  font-size: $base-font-size;
+  color: $color-primary;
+  line-height: $font-line-height-base;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary-active;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-size: $title-font-size;
+  font-weight: $font-weight-normal;
+}
+
+small {
+  font-size: $small-font-size;
+}
+
+b,
+strong {
+  font-weight: $font-weight-bold;
+}
+
+.btn-menu {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.25rem;
+
+  background: rgba($color-light, 0.8);
+  border: 2px solid $color-primary;
+  border-radius: 0.25rem;
+  color: $color-primary;
+
+  &.active,
+  &.router-link-active {
+    background: linear-gradient(
+      180deg,
+      $color-primary 0%,
+      $color-primary-dark 100%
+    );
+    color: $color-light;
+  }
+
+  &:hover {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      $color-primary 0%,
+      $color-primary-active 100%
+    );
+    color: $color-light;
+  }
+
+  &.disabled {
+    cursor: default;
+    background: $color-disabled-light;
+    color: $color-disabled;
+    border: 2px solid $color-disabled-light;
+  }
+
+  &.menu-big {
+    padding: 0.8rem 3rem;
+  }
+}
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.375rem 0.8rem;
+  border-radius: 0.5rem;
+  &.btn-big {
+    padding: 0.375rem 1.5rem;
+  }
+
+  &.btn-primary {
+    background: linear-gradient(
+      180deg,
+      $color-primary 0%,
+      $color-primary-dark 100%
+    );
+    color: $color-light;
+
+    &:hover {
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        $color-primary 0%,
+        $color-primary-active 100%
+      );
+    }
+
+    &.active {
+      background: $color-primary-active;
+    }
+  }
+}
+
+.tag {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.125rem 1.1rem;
+  color: $color-primary;
+  border: 2px solid $color-primary;
+  border-radius: 0.875rem;
+
+  &:hover {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      $color-primary 0%,
+      $color-primary-active 100%
+    );
+    color: $color-light;
+  }
+
+  &.active {
+    color: $color-light;
+    background: $color-primary;
+  }
+
+  &.disabled {
+    cursor: default;
+
+    &:hover {
+      background: none;
+      color: $color-primary;
+    }
+  }
+}
+
+.card-temp {
+  .card-title {
+    @include background-primary;
+    color: $color-light;
+    padding: 1.2rem;
+    border-radius: 4px 4px 0 0;
+    @include box-showdow;
+  }
+
+  .card-content {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    border-radius: 0 0 4px 4px;
+    @include box-showdow;
+    backdrop-filter: blur(2px);
+
+    &.card-content-center {
+      align-items: center;
+    }
+  }
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}
+
+.mr-1 {
+  margin-right: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 1rem;
+}
+
+.mr-3 {
+  margin-right: 1.5rem;
+}
+
+.mr-4 {
+  margin-right: 2rem;
+}
+
+.mr-5 {
+  margin-right: 3rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}

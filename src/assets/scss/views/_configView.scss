@@ -1,0 +1,54 @@
+#config {
+  width: 100%;
+
+  .config-aside {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .config-content {
+    flex: auto;
+  }
+
+  .btn-add {
+    cursor: pointer;
+    & > img {
+      border-radius: 50%;
+      border: 4px solid $color-primary;
+      padding: 0.25rem;
+    }
+
+    & > p {
+      text-align: center;
+    }
+
+    &:hover {
+      & > img {
+        scale: 1.1;
+      }
+    }
+  }
+
+  .tags {
+    padding: 2rem;
+    @include box-showdow;
+    border: 1px solid $color-disabled-light;
+    border-radius: $border-radius-base;
+    th {
+      font-size: $title-font-size;
+      text-align: center;
+      padding: 1rem 3rem;
+    }
+    td:nth-child(2n) {
+      text-align: center;
+      vertical-align:middle;
+    }
+    td {
+      padding: 1rem;
+    }
+    .tag-name{
+      display: flex;
+      align-items: center;
+    }
+  }
+}

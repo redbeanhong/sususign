@@ -1,0 +1,97 @@
+#nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  @include background-secondary;
+}
+
+h1 {
+  background-image: url("@/assets/img/logo-big.png");
+  width: 175px;
+  height: 45px;
+  text-indent: 101%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.navbar {
+  padding: 0 1rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  display: flex;
+
+  .hamburger {
+    padding: 1rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+      .links-phone {
+        display: block;
+      }
+    }
+    @include tablets {
+      display: none;
+    }
+
+    .links-phone {
+      @include background-secondary;
+      border-radius: $border-radius-base;
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: -100%;
+      width: 100vw;
+      padding: 1rem;
+      > a {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .links {
+    padding: 0.5rem 0;
+    display: none;
+    @include tablets {
+      display: flex;
+    }
+
+    & > a {
+      position: relative;
+      padding: 1rem 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $title-font-size;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.5rem;
+        width: 0%;
+        height: 4px;
+        background: $color-primary;
+        transition: 0.5s;
+      }
+      
+      @include tablets {
+        margin-left: 1rem;
+      }
+      @include computer {
+        margin-left: 2rem;
+      }
+
+      &.router-link-active {
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

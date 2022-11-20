@@ -1,2 +1,12 @@
-@import "./cssReset.scss";
-@import "./grid.scss";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap");
+@import "./helper/_cssReset.scss";
+@import "./helper/base.scss";
+@import "./helper/_grid.scss";
+@import "./helper/_navBar.scss";
+@import "./helper/_footer.scss";
+
+@import "./views/_homeView.scss";
+@import "./views/_documentView.scss";
+@import "./views/_configView.scss";
+@import "./views/_pdfEditView.scss";
+@import "./views/_downloadView.scss";

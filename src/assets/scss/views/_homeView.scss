@@ -1,0 +1,41 @@
+#home {
+  background-image: url("@/assets/img/home/bgComputer.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+
+  .home-content{
+    flex-direction: column-reverse;
+    @include computer{
+      flex-direction: row;
+    }
+  }
+
+  .card {
+    @include background-secondary;
+    border-radius: $border-radius-base;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    margin-bottom: 1.125rem;
+
+    img {
+      height: 100px;
+      margin-right: 58px;
+    }
+  }
+
+  .upload{
+    @include background-secondary;
+    border-radius: $border-radius-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 6.6rem;
+  }
+  
+  .limit{
+    color: $color-secondary;
+  }
+}

@@ -1,0 +1,218 @@
+#pdf {
+  width: 100%;
+
+  #sign {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    background-color: rgba(203, 201, 201, 0.7);
+
+    &.isShow {
+      display: flex;
+      z-index: 99;
+    }
+  }
+  .sign-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px;
+    background-color: white;
+    .sign-body {
+      width: 100%;
+      min-height: 100px;
+    }
+  }
+
+  #sign-writter {
+    @include background-secondary;
+    @include box-showdow-inset;
+    border-radius: $border-radius-base;
+  }
+
+  .input-name {
+    position: relative;
+
+    & > input {
+      border: none;
+      width: 100%;
+      height: 150px;
+      @include background-secondary;
+      @include box-showdow-inset;
+      border-radius: $border-radius-base;
+      padding: 1rem 3.5rem;
+      font-size: 36px;
+      color: $color-primary;
+
+      &:focus {
+        outline: 2px solid $color-primary-active;
+      }
+    }
+
+    &::before {
+      content: "";
+      z-index: 2;
+      position: absolute;
+      width: 2px;
+      height: calc(100% - 3rem);
+      background: $color-primary;
+      left: 2.5rem;
+      top: 1.5rem;
+    }
+
+    &::after {
+      content: "";
+      z-index: 2;
+      position: absolute;
+      width: calc(100% - 3rem);
+      height: 2px;
+      background: $color-primary;
+      left: 1.5rem;
+      bottom: 2rem;
+    }
+    input[type="text"]::placeholder {
+      text-align: center;
+      font-size: 1rem;
+      color: rgba($color-primary, 0.4);
+      letter-spacing: 0.3rem;
+    }
+  }
+
+  .imgArea {
+    width: 100%;
+    height: 150px;
+    @include background-secondary;
+    @include box-showdow-inset;
+    border-radius: $border-radius-base;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-add {
+    cursor: pointer;
+    & > img {
+      border-radius: 50%;
+      border: 4px solid $color-primary;
+      padding: 0.25rem;
+    }
+
+    & > p {
+      text-align: center;
+    }
+
+    &:hover {
+      & > img {
+        scale: 1.1;
+      }
+    }
+  }
+
+  #imgPreview {
+    height: 100%;
+  }
+
+  .pdfEdit-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tool-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+
+    & > img {
+      margin-right: 1rem;
+    }
+
+    &:hover {
+      color: $color-primary-active;
+    }
+  }
+  .input-date {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    label {
+      position: absolute;
+      right: 0;
+      top: calc(50% - 12px);
+    }
+
+    #dateline {
+      width: 100%;
+      border: none;
+      color: $color-primary;
+      letter-spacing: 0.3rem;
+    }
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    //display: none;
+    //-webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+    z-index: 99;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  #main-pdf {
+    height: 60vh;
+    overflow: scroll;
+    @include background-secondary;
+    padding: 1rem;
+    border-radius: $border-radius-base;
+  }
+
+  .sign-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem 0;
+    .sign-item-img {
+      flex: auto;
+      border: 1px solid #4abb9c;
+      border-radius: 4px;
+      & > img {
+        width: 100%;
+      }
+    }
+  }
+  .pdf-edit-item {
+    width: 100%;
+  }
+
+  .sign-container {
+    padding: 2rem;
+  }
+
+  .sign-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn-save {
+      right: 0;
+      position: absolute;
+    }
+  }
+
+  .sign-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
