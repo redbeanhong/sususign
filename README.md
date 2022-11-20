@@ -19,6 +19,7 @@ npm run build
 ```
 
 ## 資料夾說明
+```sh
 dist - 部屬資料夾
 src - 檔案資料夾
     ├─ assets - 樣式資料夾
@@ -27,7 +28,8 @@ src - 檔案資料夾
     ├─ components - 小型元件
     ├─ router - 路由
     └─ views - 畫面元件
-    
+```
+
 ## 使用技術
 * Vite
 * Vue3
