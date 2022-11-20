@@ -230,19 +230,29 @@ export default {
         pdf.addImage(image, "png", 0, 0, width, height);
         if (index < this.pagesCanvas.length - 1) pdf.addPage();
       });
+
       const pdfBlob = pdf.output("blob");
-      localStorage.setItem(this.pdfId, pdfBlob);
+      const data = await this.readBlob(pdfBlob);
+      localStorage.setItem(this.pdfId, data);
       const pdfData = JSON.parse(localStorage.getItem("userPdfs")).map((e) => {
         if (e.id == this.pdfId) {
           e.dateLine = this.dateLine;
-          e.status = "finished";
           return e;
         } else {
           return e;
         }
       });
       localStorage.setItem("userPdfs", JSON.stringify(pdfData));
+      console.log(pdfBlob);
+      this.downloadBlobPdf(pdfBlob);
       this.$router.push({ path: `/pdf_download/${this.pdfId}` });
+    },
+    downloadBlobPdf: async function downloadBlobPdf(blob) {
+      const aTag = document.createElement("a");
+      const blobPdf = new Blob([blob], { type: "application/pdf" });
+      aTag.download = "download.pdf";
+      aTag.href = URL.createObjectURL(blobPdf);
+      aTag.click();
     },
     updateCanvas(canvasData) {
       this.pagesCanvas[canvasData.index] = canvasData.canvas;
@@ -258,6 +268,14 @@ export default {
           break;
         }
       }
+    },
+    readBlob(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => resolve(reader.result));
+        reader.addEventListener("error", reject);
+        reader.readAsDataURL(blob);
+      });
     },
   },
   computed: {

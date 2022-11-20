@@ -112,10 +112,10 @@
             編輯
           </div>
           <ul class="edit-tool" :class="{ active: editItem === docIndex }">
-            <li @click="downloadPdf(pdf.id)">
+            <!-- <li @click="downloadPdf(pdf.id)">
               <img src="@/assets/img/icon/iconDownload.png" alt="download" />
               下載
-            </li>
+            </li> -->
             <li @click="deletePdf(pdf.id)">
               <img src="@/assets/img/icon/iconDelete.png" alt="delete" />
               刪除
