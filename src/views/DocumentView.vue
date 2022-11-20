@@ -50,7 +50,7 @@
           :key="docIndex"
         >
           <div class="doc-head">
-            <img class="mr-2" src="@/assets/img/Mask group.png" alt="test" />
+            <img class="mr-2" src="@/assets/img/home/upload.png" alt="temp" />
             <div class="doc-head-content">
               <h3 class="mb-1">{{ pdf.title }}</h3>
               <p class="mb-1">
@@ -146,7 +146,6 @@ export default {
   methods: {
     getPdfData() {
       this.pdfData = JSON.parse(localStorage.getItem("userPdfs"));
-      console.log(this.pdfData);
     },
     checkDateLine(toTime) {
       if (toTime == "") return false;

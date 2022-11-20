@@ -10,7 +10,7 @@ export default {
     page: Object,
     name: String,
     images: Array,
-    pageScale: Object,
+    pageScale: Number,
     width: Number,
   },
   data() {
@@ -90,7 +90,6 @@ export default {
         index: vm.index,
         canvas: vm.canvas,
       };
-      console.log(canvasData);
       this.$emit("update", canvasData);
     },
   },

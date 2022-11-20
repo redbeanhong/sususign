@@ -164,14 +164,12 @@ export default {
     onUploadImg(e) {
       const vm = this;
       const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
-      console.log(files);
       const file = files[0];
       const reader = new FileReader();
       reader.addEventListener(
         "load",
         () => {
           vm.imgPreview = reader.result;
-          console.log(reader.result);
         },
         false
       );
